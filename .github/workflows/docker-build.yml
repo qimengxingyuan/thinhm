@@ -42,8 +42,10 @@ jobs:
           # 这里开启了三个架构：AMD64, ARM64, ARMv7
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
-          # 使用 latest 版本标签
-          tags: ghcr.io/${{ github.repository_owner }}/thinhm:latest
+          # 使用多个版本标签
+          tags:
+            - ghcr.io/${{ github.repository_owner }}/thinhm:latest
+            - ghcr.io/${{ github.repository_owner }}/thinhm:${{ github.sha }}
           # 开启缓存
           cache-from: type=gha
           cache-to: type=gha,mode=max
