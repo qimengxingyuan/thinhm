@@ -1294,17 +1294,7 @@ watch(activeTab, (val) => {
           >
             开放中心
           </button>
-          <button
-            @click="activeTab = 'about'"
-            :class="
-              activeTab === 'about'
-                ? 'border border-black text-gray-900 font-bold bg-transparent'
-                : 'border border-transparent text-gray-600 hover:bg-gray-50'
-            "
-            class="whitespace-nowrap md:whitespace-normal w-auto md:w-full text-left px-4 py-2 rounded-lg text-sm transition-colors"
-          >
-            关于
-          </button>
+
         </nav>
       </div>
 
@@ -3386,138 +3376,7 @@ document.querySelector('.card-item').addEventListener('click', () => {
               </div>
             </div>
           </div>
-          <div
-            v-if="activeTab === 'about'"
-            class="min-h-full flex flex-row items-start justify-between p-8 gap-8 -mt-4"
-          >
-            <div class="flex-[0.618] text-left space-y-4 self-center">
-              <h4 class="text-2xl font-bold text-gray-900 mb-1">关于 thinhm</h4>
-              <div class="flex items-center justify-start gap-2">
-                <span class="text-2xl text-gray-400 font-mono">v{{ store.currentVersion }}</span>
-                <span
-                  v-if="store.hasUpdate && store.isLogged"
-                  class="w-2 h-2 bg-gray-900 rounded-full cursor-pointer"
-                  title="发现新版本"
-                  @click="store.checkUpdate"
-                ></span>
-              </div>
-              <div class="text-xs text-gray-500">QQ群:613835409</div>
-              <div class="text-xs text-gray-500">
-                官网与介绍：
-                <a
-                  href="https://thinhm.top/"
-                  target="_blank"
-                  class="text-gray-600 underline hover:text-gray-900"
-                >
-                  https://thinhm.top/
-                </a>
-              </div>
-              <div class="text-xs text-gray-500">
-                飞牛百科：
-                <a
-                  href="http://qdnas.icu/"
-                  target="_blank"
-                  class="text-gray-600 underline hover:text-gray-900"
-                >
-                  http://qdnas.icu/
-                </a>
-              </div>
 
-              <div class="text-xs text-gray-500">
-                图标库主站：
-                <a
-                  href="https://nasicon.top/"
-                  target="_blank"
-                  class="text-gray-600 underline hover:text-gray-900"
-                >
-                  https://nasicon.top/
-                </a>
-              </div>
-              <div class="text-xs text-gray-500">
-                图标库二站：
-                <a
-                  href="https://2.nasicon.top/"
-                  target="_blank"
-                  class="text-gray-600 underline hover:text-gray-900"
-                >
-                  https://2.nasicon.top/
-                </a>
-              </div>
-              <div class="text-xs text-gray-500">
-                图标库三站：
-                <a
-                  href="https://4.nasicon.top/"
-                  target="_blank"
-                  class="text-gray-600 underline hover:text-gray-900"
-                >
-                  https://4.nasicon.top/
-                </a>
-              </div>
-              <div class="flex items-center justify-start gap-6">
-                <a
-                  href="https://github.com/Garry-QD/thinhm"
-                  target="_blank"
-                  class="hover:opacity-80 transition-opacity"
-                  title="GitHub"
-                >
-                  <img src="https://cdn.simpleicons.org/github" alt="GitHub" class="w-6 h-6 transition-all" />
-                </a>
-                <a
-                  href="https://gitee.com/gjx0808/thinhm"
-                  target="_blank"
-                  class="text-gray-700 hover:text-gray-900 hover:opacity-80 transition-opacity"
-                  title="Gitee"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    class="w-6 h-6"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M11.984 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.811 17.914l-.943-.896c-.342-.325-.92-.332-1.19-.026l-2.72 3.067a.772.772 0 0 1-1.05.09l-6.55-5.314a.775.775 0 0 1 .1-1.267l6.894-4.003a.775.775 0 0 1  1.03.22l2.214 3.285a.775.775 0 0 0 1.19.12l1.024-.967a.775.775 0 0 0 .08-1.02l-3.65-5.504a.775.775 0 0 0-1.17-.14l-8.78 7.32a.775.775 0 0 0-.15 1.08l7.87 6.38a.775.775 0 0 0 1.05-.09l3.58-4.034a.775.775 0 0 0 .02-1.08z"
-                    />
-                  </svg>
-                </a>
-                <a
-                  href="https://hub.docker.com/r/qdnas/thinhm"
-                  target="_blank"
-                  class="hover:opacity-80 transition-opacity"
-                  title="Docker"
-                >
-                  <img
-                    src="https://cdn.simpleicons.org/docker"
-                    alt="Docker"
-                    class="w-6 h-6 object-contain scale-110 transition-all"
-                  />
-                </a>
-              </div>
-            </div>
-
-            <div class="flex-[0.382] flex flex-col items-center gap-4">
-              <div class="text-sm font-medium text-gray-700">☕ 投喂作者</div>
-              <div class="flex flex-col gap-4">
-                <div class="flex flex-col items-center gap-2">
-                  <img
-                    src="/alipay.jpg"
-                    class="w-40 h-40 rounded-lg shadow-sm border border-gray-100 object-contain transition-all"
-                    alt="支付宝"
-                  />
-                  <span class="text-[10px] text-gray-500">支付宝</span>
-                </div>
-                <div class="flex flex-col items-center gap-2">
-                  <img
-                    src="/wechat.jpg"
-                    class="w-40 h-40 rounded-lg shadow-sm border border-gray-100 object-contain transition-all"
-                    alt="微信"
-                  />
-                  <span class="text-[10px] text-gray-500">微信</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
