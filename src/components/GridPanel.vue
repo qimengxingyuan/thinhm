@@ -40,7 +40,6 @@ const CountdownWidget = defineAsyncComponent(() => import("./CountdownWidget.vue
 const DockerWidget = defineAsyncComponent(() => import("./DockerWidget.vue"));
 const SystemStatusWidget = defineAsyncComponent(() => import("./SystemStatusWidget.vue"));
 const CustomCssWidget = defineAsyncComponent(() => import("./CustomCssWidget.vue"));
-const FileTransferWidget = defineAsyncComponent(() => import("./FileTransferWidget.vue"));
 const SizeSelector = defineAsyncComponent(() => import("./SizeSelector.vue"));
 
 const store = useMainStore();
@@ -2155,7 +2154,6 @@ onMounted(() => {
             <DockerWidget v-else-if="widget.type === 'docker'" :widget="widget" />
             <SystemStatusWidget v-else-if="widget.type === 'system-status'" :widget="widget" />
             <CustomCssWidget v-else-if="widget.type === 'custom-css'" :widget="widget" />
-            <FileTransferWidget v-else-if="widget.type === 'file-transfer'" :widget="widget" />
           </GridItem>
         </GridLayout>
 

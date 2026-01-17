@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { ref, onMounted, computed, watch } from "vue";
 import { useStorage } from "@vueuse/core";
 import { useMainStore } from "../stores/main";
@@ -718,7 +718,6 @@ const isUnknownWidget = (type: string) => {
     "iframe",
     "countdown",
     "system-status",
-    "file-transfer",
     "music",
   ];
 
@@ -742,14 +741,6 @@ const restoreMissingWidgets = () => {
     { id: "w7", type: "quote", enable: true, isPublic: true },
     { id: "sidebar", type: "sidebar", enable: false, isPublic: true },
     { id: "docker", type: "docker", enable: false, isPublic: true, colSpan: 1, rowSpan: 1 },
-    {
-      id: "file-transfer",
-      type: "file-transfer",
-      enable: true,
-      colSpan: 2,
-      rowSpan: 2,
-      isPublic: true,
-    },
     {
       id: "system-status",
       type: "system-status",
@@ -1039,33 +1030,6 @@ const handleSaveAsDefault = async () => {
   }, "请输入密码以确认保存默认模板");
 };
 
-const normalizeFileTransferWidgets = () => {
-  const list = store.widgets;
-  const all = list.filter((w) => w.type === "file-transfer");
-  if (all.length === 0) return;
-
-  const keep = all.find((w) => w.id === "file-transfer") || all[0]!;
-  let changed = false;
-
-  for (let i = list.length - 1; i >= 0; i--) {
-    const w = list[i];
-    if (w && w.type === "file-transfer" && w.id !== keep.id) {
-      list.splice(i, 1);
-      changed = true;
-    }
-  }
-
-  if (
-    keep.id !== "file-transfer" &&
-    !list.some((w) => w.id === "file-transfer" && w.type !== "file-transfer")
-  ) {
-    keep.id = "file-transfer";
-    changed = true;
-  }
-
-  if (changed) store.saveData();
-};
-
 // 修复：移除 computed 中的副作用，改用 onMounted 初始化
 onMounted(() => {
   store.widgets.forEach((w: WidgetConfig) => {
@@ -1073,7 +1037,6 @@ onMounted(() => {
       w.data = { url: "" };
     }
   });
-  normalizeFileTransferWidgets();
 });
 
 const addIframeWidget = () => {
@@ -1895,9 +1858,7 @@ watch(activeTab, (val) => {
                                             ? "言"
                                             : w.type === "bookmarks"
                                               ? "藏"
-                                              : w.type === "file-transfer"
-                                                ? "传"
-                                                : w.type === "todo"
+                                              : w.type === "todo"
                                                   ? "待"
                                                   : w.type === "calculator"
                                                     ? "算"
@@ -1939,9 +1900,7 @@ watch(activeTab, (val) => {
                                             ? "每日一言"
                                             : w.type === "bookmarks"
                                               ? "收藏夹"
-                                              : w.type === "file-transfer"
-                                                ? "文件传输助手"
-                                                : w.type === "todo"
+                                              : w.type === "todo"
                                                   ? "待办事项"
                                                   : w.type === "calculator"
                                                     ? "计算器"
