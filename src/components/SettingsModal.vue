@@ -3460,7 +3460,7 @@ document.querySelector('.card-item').addEventListener('click', () => {
                   class="hover:opacity-80 transition-opacity"
                   title="GitHub"
                 >
-                  <img src="/icons/github.svg" alt="GitHub" class="w-6 h-6 transition-all" />
+                  <img src="https://cdn.simpleicons.org/github" alt="GitHub" class="w-6 h-6 transition-all" />
                 </a>
                 <a
                   href="https://gitee.com/gjx0808/thinhm"
@@ -3488,7 +3488,7 @@ document.querySelector('.card-item').addEventListener('click', () => {
                   title="Docker"
                 >
                   <img
-                    src="/icons/Docker+Docker+docker.com.png"
+                    src="https://cdn.simpleicons.org/docker"
                     alt="Docker"
                     class="w-6 h-6 object-contain scale-110 transition-all"
                   />
