@@ -1117,17 +1117,15 @@ const openSettings = async () => {
     try {
       // 尝试使用默认用户名和密码登录
       await store.login("admin", "admin");
-      // 登录成功后显示设置弹窗
+      // 登录成功后显示设置弹窗，但不进入编辑模式
       showSettingsModal.value = true;
-      isEditMode.value = true;
     } catch (e) {
       console.error("Auto login failed", e);
       // 登录失败，不显示设置弹窗，保持退出状态
     }
   } else {
-    // 已登录直接显示设置弹窗
+    // 已登录直接显示设置弹窗，但不进入编辑模式
     showSettingsModal.value = true;
-    isEditMode.value = true;
   }
 };
 
