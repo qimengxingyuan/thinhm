@@ -753,7 +753,7 @@ app.get("/api/stats/amap", async (req, res) => {
 });
 
 // System Stats API
-app.get("/api/system/stats", authenticateToken, async (req, res) => {
+app.get("/api/system/stats", async (req, res) => {
   try {
     const [cpuLoad, cpuInfo, mem, fsSize, networkStats, temp, time, osInfo] = await Promise.all([
       si.currentLoad(),
@@ -809,7 +809,7 @@ app.get("/api/system/stats", authenticateToken, async (req, res) => {
 });
 
 // Docker Management APIs
-app.get("/api/docker/containers", authenticateToken, async (req, res) => {
+app.get("/api/docker/containers", async (req, res) => {
   // Update last access time and ensure collector is running
   lastDockerRequestTime = Date.now();
   startStatsCollector();
