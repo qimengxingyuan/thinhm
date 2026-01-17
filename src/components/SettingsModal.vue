@@ -306,7 +306,6 @@ const testQWeather = async () => {
   }
 };
 
-const passwordInput = ref("");
 const newPasswordInput = ref("");
 
 const toggleDockerMock = (checked: boolean) => {
@@ -468,18 +467,7 @@ const close = () => emit("update:show", false);
 
 const showPassword = ref(false);
 
-const handleLogin = async () => {
-  try {
-    const success = await store.login("admin", passwordInput.value);
-    if (success) {
-      alert("登录成功！");
-      passwordInput.value = "";
-    }
-  } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : "密码错误！";
-    alert(msg);
-  }
-};
+
 const handleChangePassword = () => {
   if (!newPasswordInput.value || newPasswordInput.value.length < 4) return alert("密码至少4位");
   requestAuth(async () => {
@@ -3058,23 +3046,7 @@ document.querySelector('.card-item').addEventListener('click', () => {
           </div>
 
           <div v-if="activeTab === 'account'" class="min-h-full flex flex-col justify-center">
-            <div v-if="!store.isLogged" class="text-center">
-              <h4 class="text-xl font-bold mb-6 text-gray-900">管理员登录</h4>
-              <input
-                v-model="passwordInput"
-                type="password"
-                placeholder="密码..."
-                class="w-full max-w-xs px-4 py-3 border border-gray-200 rounded-xl mb-4 mx-auto text-center focus:border-gray-900 outline-none"
-                @keyup.enter="handleLogin"
-              />
-              <button
-                @click="handleLogin"
-                class="bg-gray-900 text-white px-10 py-3 rounded-xl font-bold hover:bg-gray-800 transition-colors"
-              >
-                登 录
-              </button>
-            </div>
-            <div v-else class="max-w-sm mx-auto w-full">
+            <div class="max-w-sm mx-auto w-full">
               <div class="bg-gray-50 p-5 rounded-xl border border-gray-100 mb-6">
                 <h5 class="text-sm font-bold text-gray-900 mb-3">📦 备份与恢复</h5>
                 <div class="grid grid-cols-2 gap-3">

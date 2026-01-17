@@ -512,6 +512,9 @@ export const useMainStore = defineStore("main", () => {
     if (isInitializing) return;
     isInitializing = true;
     try {
+      // 清除退出标记
+      localStorage.removeItem("flat-nas-logout");
+
       const res = await fetch("/api/data", { headers: getHeaders() });
       if (res.ok) {
         const data = await res.json();
@@ -834,6 +837,7 @@ export const useMainStore = defineStore("main", () => {
     isLogged.value = false;
     localStorage.removeItem("flat-nas-token");
     localStorage.removeItem("flat-nas-username");
+    localStorage.setItem("flat-nas-logout", "true");
 
     // Reload to show default/public view
     await init();

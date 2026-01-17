@@ -410,9 +410,7 @@ const toggle = () => {
 };
 
 const handleLogout = async () => {
-  if (confirm("确定要退出登录吗？")) {
-    await store.logout();
-  }
+  await store.logout();
 };
 
 // --- Menu Items ---

